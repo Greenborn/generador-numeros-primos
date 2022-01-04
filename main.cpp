@@ -12,8 +12,8 @@ using std::fstream;
 
 bool esPrimo( int numero ){
     long contador;
-    
-    for (contador = 2; contador < numero / 2; contador ++){
+    long max = (numero / 2) + 1;
+    for (contador = 2; contador < max; contador ++){
         if (numero % contador == 0){
             return false;
         }
@@ -26,14 +26,19 @@ int main(int numArg, char ** arg){
 
 	std::cout << numArg +" Generador de numeros primos  \n";   
 	
-    if (numArg == 1){
-	    std::cout << "Es necesario especificar la ruta del archivo a crear \n";   
+    if (numArg <= 2){
+	    std::cout << "Es necesario especificar la ruta del archivo, y el numero de inicio a crear \n";   
         return 0;
     }
 
     string archivo = arg[1];
+    long inicio = std::stol(arg[2]);
+    if (inicio < 2){
+	    std::cout << "Numero de inicio debe ser mayor a 2 \n";   
+        return 0;
+    }
 
-    std::cout << "Se escribirà el archivo:" + archivo + " \n";
+    std::cout << "Se escribirà el archivo:" + archivo + " iniciando cuenta en: " + to_string(inicio) + " \n";
 
     //creacion de un nuevo archivo
     string filename2(archivo);
@@ -44,7 +49,7 @@ int main(int numArg, char ** arg){
     if (!outfile.is_open()) {
         cerr << "Error al intentar abrir " << filename2 << '\n';
     } else {
-        for (contador = 2; contador < 2147483647; contador++){
+        for (contador = inicio; contador < 2147483647; contador++){
             if (esPrimo(contador)){
                 string outp = "Número primo: " + to_string(contador) + " \n";
                 std::cout << outp;
